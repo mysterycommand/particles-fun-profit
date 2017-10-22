@@ -1,0 +1,9 @@
+{
+  "name": "particles-fun-profit",
+  "version": "0.0.1",
+  "description": "Particles for Fun and Profit",
+  "private": true,
+  "repository": "git@github.com:mysterycommand/particles-fun-profit.git",
+  "author": "Matt Hayes <matt@mysterycommand.com>",
+  "license": "MIT"
+}
