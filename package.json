@@ -5,5 +5,8 @@
   "private": true,
   "repository": "git@github.com:mysterycommand/particles-fun-profit.git",
   "author": "Matt Hayes <matt@mysterycommand.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "commitizen": "^2.9.6"
+  }
 }
