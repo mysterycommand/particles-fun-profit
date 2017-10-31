@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "module": "system",
+    "outDir": "./ecmascript",
+    "rootDir": "./typescript",
+    "target": "es2015"
+  }
+}
