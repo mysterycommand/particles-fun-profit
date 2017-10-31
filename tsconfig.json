@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "module": "system",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": "./ecmascript",
-    "rootDir": "./typescript",
+    "rootDirs": ["config", "source"],
     "target": "es2015"
   }
 }

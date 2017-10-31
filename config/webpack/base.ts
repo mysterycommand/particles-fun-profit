@@ -1,5 +1,12 @@
 import { Configuration } from 'webpack';
 
-const configuration: Configuration = {};
+const config: Configuration = {
+  entry: ['./source/index.ts'],
+  output: {
+    filename: './static/main.js',
+    pathinfo: true,
+    publicPath: '/',
+  },
+};
 
-export default configuration;
+export default config;
