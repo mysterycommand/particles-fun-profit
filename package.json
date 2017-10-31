@@ -1,0 +1,19 @@
+{
+  "name": "particles-fun-profit",
+  "version": "0.1.0",
+  "description": "Particles for Fun and Profit",
+  "private": true,
+  "repository": "git@github.com:mysterycommand/particles-fun-profit.git",
+  "author": "Matt Hayes <matt@mysterycommand.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.0.0",
+    "prettier": "^1.7.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
