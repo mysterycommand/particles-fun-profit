@@ -21,5 +21,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "tslint-config-prettier": "^1.6.0"
   }
 }
