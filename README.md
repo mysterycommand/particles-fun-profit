@@ -2,6 +2,9 @@
 > by [Matt Hayes](mailto:matt@mysterycommand.com)<br>
 > [GitHub](https://github.com/mysterycommand), [Tumblr](https://mysterycommand.tumblr.com), [Twitter](https://twitter.com/mysterycommand)
 
+## A Note About Scaffolding
+I am literally always tinkering with this stuff.
+
 ## Game Loop
 It processus user input, but doesn't wait for it.
 ```ts
