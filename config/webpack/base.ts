@@ -6,8 +6,8 @@ const config: Configuration = {
     rules: [
       {
         enforce: 'pre',
-        loader: 'tslint-loader',
         test: /\.ts$/,
+        use: 'tslint-loader',
       },
     ],
   },
