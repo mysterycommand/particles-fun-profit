@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --config=config/webpack/dev.ts",
-    "precommit": "tsc -m es2015 && git add tsbuild/"
+    "precommit": "rm -rf tsbuild/ && tsc -m es2015 && git add tsbuild/"
   },
   "devDependencies": {
     "@types/webpack": "^3.0.14",
