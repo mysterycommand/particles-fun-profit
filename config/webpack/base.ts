@@ -1,3 +1,4 @@
+import { resolve } from 'path';
 import { Configuration } from 'webpack';
 
 const config: Configuration = {
@@ -16,7 +17,8 @@ const config: Configuration = {
     ],
   },
   output: {
-    filename: 'static/main.js',
+    filename: 'main.js',
+    path: resolve('static'),
     pathinfo: true,
     publicPath: './',
   },
