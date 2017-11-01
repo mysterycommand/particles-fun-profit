@@ -9,6 +9,7 @@ import base from './base';
 const config: Configuration = {
   devServer: {
     contentBase: buildPath,
+    hot: true,
     port: 3000,
     publicPath: '/',
   },

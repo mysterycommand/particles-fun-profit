@@ -29,6 +29,9 @@ const config: Configuration = {
   },
 
   plugins: [new Clean([build])],
+  resolve: {
+    extensions: ['.ts', '.js'],
+  },
 };
 
 export default config;
