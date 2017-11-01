@@ -62,4 +62,4 @@ typings/
 
 # generated files
 output
-static
+build

@@ -1,5 +1,5 @@
 import * as Html from 'html-webpack-plugin';
-import * as UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import * as UglifyJs from 'uglifyjs-webpack-plugin';
 import { Configuration } from 'webpack';
 import { smart } from 'webpack-merge';
 
@@ -27,7 +27,7 @@ const config: Configuration = {
       template: htmlTemplate,
       title: 'Particle Systems for Fun and Profit',
     }),
-    new UglifyJsPlugin({
+    new UglifyJs({
       cache: true,
       parallel: true,
       sourceMap: true,
