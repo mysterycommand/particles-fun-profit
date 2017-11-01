@@ -27,8 +27,8 @@
     }
 
     canvas {
-      width: 960px;
-      height: 540px;
+      width: 800px;
+      height: 450px;
     }
   </style>
 </head>
@@ -36,7 +36,8 @@
 <body>
   <main>
     <canvas id="canvas"></canvas>
-  </main>
-</body>
+  </main><% for (let chunk in htmlWebpackPlugin.files.chunks) { %>
+  <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+<% } %></body>
 
 </html>
