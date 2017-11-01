@@ -9,8 +9,12 @@ import base from './base';
 const config: Configuration = {
   devServer: {
     contentBase: buildPath,
+    port: 3000,
+    publicPath: '/',
   },
+
   devtool: 'cheap-module-source-map',
+
   plugins: [
     new CheckerPlugin(),
     new Html({

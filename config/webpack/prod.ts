@@ -8,6 +8,7 @@ import base from './base';
 
 const config: Configuration = {
   devtool: 'source-map',
+
   plugins: [
     new Html({
       filename: htmlFilename,
@@ -27,6 +28,7 @@ const config: Configuration = {
       template: htmlTemplate,
       title: 'Particle Systems for Fun and Profit',
     }),
+
     new UglifyJs({
       cache: true,
       parallel: true,
