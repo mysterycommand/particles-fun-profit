@@ -11,7 +11,7 @@ export interface Loop {
 }
 
 export default function createLoop(callback: LoopCallback): Loop {
-  const idealFrame = 1000 / 60;
+  const idealDeltaTime = 1000 / 60;
 
   let requestId: number;
 
@@ -19,24 +19,22 @@ export default function createLoop(callback: LoopCallback): Loop {
   let previousTime: number;
   let deltaTime: number;
 
-  function tick(time: number): void {
+  function tick(currentTime: number): void {
     requestId = rAF(tick);
 
     if (firstTime === -1) {
-      firstTime = time;
+      firstTime = currentTime;
     }
 
-    time -= firstTime;
+    currentTime -= firstTime;
 
     if (previousTime === -1) {
-      previousTime = time;
+      previousTime = currentTime;
     }
 
-    deltaTime = time - previousTime;
-
-    callback(time, deltaTime);
-
-    previousTime = time;
+    deltaTime = currentTime - previousTime;
+    callback(currentTime, deltaTime);
+    previousTime = currentTime;
   }
 
   return {
@@ -52,9 +50,10 @@ export default function createLoop(callback: LoopCallback): Loop {
       requestId = 0;
     },
 
-    goto(frame: number): void {
+    goto(frameNumber: number): void {
       stop();
-      callback(frame * idealFrame, idealFrame);
+      const currentTime = frameNumber * idealDeltaTime;
+      callback(currentTime, idealDeltaTime);
     },
   };
 }

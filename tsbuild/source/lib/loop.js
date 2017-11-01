@@ -1,22 +1,22 @@
 const { cancelAnimationFrame: cAF, requestAnimationFrame: rAF } = window;
 export default function createLoop(callback) {
-    const idealFrame = 1000 / 60;
+    const idealDeltaTime = 1000 / 60;
     let requestId;
     let firstTime;
     let previousTime;
     let deltaTime;
-    function tick(time) {
+    function tick(currentTime) {
         requestId = rAF(tick);
         if (firstTime === -1) {
-            firstTime = time;
+            firstTime = currentTime;
         }
-        time -= firstTime;
+        currentTime -= firstTime;
         if (previousTime === -1) {
-            previousTime = time;
+            previousTime = currentTime;
         }
-        deltaTime = time - previousTime;
-        callback(time, deltaTime);
-        previousTime = time;
+        deltaTime = currentTime - previousTime;
+        callback(currentTime, deltaTime);
+        previousTime = currentTime;
     }
     return {
         start() {
@@ -29,9 +29,10 @@ export default function createLoop(callback) {
             cAF(requestId);
             requestId = 0;
         },
-        goto(frame) {
+        goto(frameNumber) {
             stop();
-            callback(frame * idealFrame, idealFrame);
+            const currentTime = frameNumber * idealDeltaTime;
+            callback(currentTime, idealDeltaTime);
         },
     };
 }
