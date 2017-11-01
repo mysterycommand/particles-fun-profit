@@ -1,4 +1,4 @@
-import Loop from './lib/loop';
+import createLoop from './lib/loop';
 const { round } = Math;
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d');
@@ -16,7 +16,7 @@ const callback = (currentTime, deltaTime) => {
     context.textBaseline = 'bottom';
     context.fillText(fps, 10, 10 + fontSize);
 };
-const loop = new Loop(callback);
+const loop = createLoop(callback);
 loop.start();
 setTimeout(loop.stop, 500);
 //# sourceMappingURL=index.js.map

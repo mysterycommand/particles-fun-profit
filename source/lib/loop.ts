@@ -4,52 +4,57 @@ export interface LoopCallback {
   (currentTime: number, deltaTime: number): void;
 }
 
-export default class Loop {
-  private static idealFrame = 1000 / 60;
+export interface Loop {
+  start(): void;
+  stop(): void;
+  goto(frame: number): void;
+}
 
-  private requestId: number;
+export default function createLoop(callback: LoopCallback): Loop {
+  const idealFrame = 1000 / 60;
 
-  private firstTime: number;
-  private previousTime: number;
-  private deltaTime: number;
+  let requestId: number;
 
-  public constructor(private callback: LoopCallback) {}
+  let firstTime: number;
+  let previousTime: number;
+  let deltaTime: number;
 
-  public start = (): void => {
-    this.firstTime = -1;
-    this.previousTime = -1;
-    this.deltaTime = 0;
-    this.requestId = rAF(this.tick);
-  };
+  function tick(time: number): void {
+    requestId = rAF(tick);
 
-  public stop = (): void => {
-    cAF(this.requestId);
-    this.requestId = 0;
-  };
-
-  public goto = (frame: number): void => {
-    const { idealFrame } = Loop;
-    this.stop();
-    this.callback(frame * idealFrame, idealFrame);
-  };
-
-  private tick: FrameRequestCallback = (time: number): void => {
-    this.requestId = rAF(this.tick);
-
-    if (this.firstTime === -1) {
-      this.firstTime = time;
+    if (firstTime === -1) {
+      firstTime = time;
     }
 
-    time -= this.firstTime;
+    time -= firstTime;
 
-    if (this.previousTime === -1) {
-      this.previousTime = time;
+    if (previousTime === -1) {
+      previousTime = time;
     }
 
-    this.deltaTime = time - this.previousTime;
+    deltaTime = time - previousTime;
 
-    this.callback(time, this.deltaTime);
+    callback(time, deltaTime);
 
-    this.previousTime = time;
+    previousTime = time;
+  }
+
+  return {
+    start(): void {
+      firstTime = -1;
+      previousTime = -1;
+      deltaTime = 0;
+      requestId = rAF(tick);
+    },
+
+    stop(): void {
+      cAF(requestId);
+      requestId = 0;
+    },
+
+    goto(frame: number): void {
+      stop();
+      callback(frame * idealFrame, idealFrame);
+    },
   };
 }

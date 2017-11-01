@@ -1,4 +1,4 @@
-import Loop, { LoopCallback } from './lib/loop';
+import createLoop, { LoopCallback } from './lib/loop';
 
 const { round } = Math;
 
@@ -22,6 +22,6 @@ const callback: LoopCallback = (currentTime: number, deltaTime: number): void =>
   context.fillText(fps, 10, 10 + fontSize);
 };
 
-const loop = new Loop(callback);
+const loop = createLoop(callback);
 loop.start();
 setTimeout(loop.stop, 500);
