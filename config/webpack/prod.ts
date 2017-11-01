@@ -3,13 +3,14 @@ import * as UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import { Configuration } from 'webpack';
 import { smart } from 'webpack-merge';
 
+import { htmlFilename, htmlTemplate } from '../paths';
 import base from './base';
 
 const config: Configuration = {
   devtool: 'source-map',
   plugins: [
     new Html({
-      filename: 'index.html',
+      filename: htmlFilename,
       inject: false,
       minify: {
         collapseWhitespace: true,
@@ -23,7 +24,7 @@ const config: Configuration = {
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true,
       },
-      template: './source/index.html',
+      template: htmlTemplate,
       title: 'Particle Systems for Fun and Profit',
     }),
     new UglifyJsPlugin({

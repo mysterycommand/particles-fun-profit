@@ -3,6 +3,7 @@ import * as Html from 'html-webpack-plugin';
 import { Configuration, NamedModulesPlugin } from 'webpack';
 import { smart } from 'webpack-merge';
 
+import { htmlFilename, htmlTemplate } from '../paths';
 import base from './base';
 
 const config: Configuration = {
@@ -10,9 +11,9 @@ const config: Configuration = {
   plugins: [
     new CheckerPlugin(),
     new Html({
-      filename: 'index.html',
+      filename: htmlFilename,
       inject: false,
-      template: './source/index.html',
+      template: htmlTemplate,
       title: 'Particle Systems for Fun and Profit',
     }),
     new NamedModulesPlugin(),

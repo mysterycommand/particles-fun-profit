@@ -1,14 +1,15 @@
-import { resolve } from 'path';
 import { Configuration } from 'webpack';
 
+import { entry, outputFilename, path, publicPath } from '../paths';
+
 const config: Configuration = {
-  entry: ['./source/index.ts'],
+  entry: [entry],
   module: {
     rules: [
       {
         enforce: 'pre',
         test: /\.ts$/,
-        use: [{ loader: 'tslint-loader' }],
+        use: 'tslint-loader',
       },
       {
         test: /\.ts$/,
@@ -17,12 +18,11 @@ const config: Configuration = {
     ],
   },
   output: {
-    filename: 'main.js',
-    path: resolve('static'),
+    filename: outputFilename,
+    path,
     pathinfo: true,
-    publicPath: './',
+    publicPath,
   },
-  plugins: [],
 };
 
 export default config;
