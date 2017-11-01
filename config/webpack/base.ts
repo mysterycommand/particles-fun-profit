@@ -7,7 +7,11 @@ const config: Configuration = {
       {
         enforce: 'pre',
         test: /\.ts$/,
-        use: 'tslint-loader',
+        use: [{ loader: 'tslint-loader' }],
+      },
+      {
+        test: /\.ts$/,
+        use: 'awesome-typescript-loader',
       },
     ],
   },
