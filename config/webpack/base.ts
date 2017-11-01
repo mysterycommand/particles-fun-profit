@@ -1,3 +1,4 @@
+import * as Html from 'html-webpack-plugin';
 import { Configuration } from 'webpack';
 
 const config: Configuration = {
@@ -16,10 +17,17 @@ const config: Configuration = {
     ],
   },
   output: {
-    filename: './static/main.js',
+    filename: 'main.js',
     pathinfo: true,
-    publicPath: '/',
+    publicPath: './',
   },
+  plugins: [
+    new Html({
+      filename: 'static/index.html',
+      template: './source/index.html',
+      title: 'Particle Systems for Fun and Profit',
+    }),
+  ],
 };
 
 export default config;
