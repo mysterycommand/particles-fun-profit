@@ -1,7 +1,7 @@
 import * as Clean from 'clean-webpack-plugin';
 import { Configuration } from 'webpack';
 
-import { build, entry, outputFilename, path, publicPath } from '../paths';
+import { build, buildPath, entry, outputFilename, relativePath } from '../paths';
 
 const config: Configuration = {
   entry: [entry],
@@ -20,9 +20,9 @@ const config: Configuration = {
   },
   output: {
     filename: outputFilename,
-    path,
+    path: buildPath,
     pathinfo: true,
-    publicPath,
+    publicPath: relativePath,
   },
   plugins: [new Clean([build])],
 };

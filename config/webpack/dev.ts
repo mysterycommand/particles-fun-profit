@@ -1,12 +1,15 @@
 import { CheckerPlugin } from 'awesome-typescript-loader';
 import * as Html from 'html-webpack-plugin';
-import { Configuration, NamedModulesPlugin } from 'webpack';
+import { Configuration, HotModuleReplacementPlugin, NamedModulesPlugin } from 'webpack';
 import { smart } from 'webpack-merge';
 
-import { htmlFilename, htmlTemplate } from '../paths';
+import { buildPath, htmlFilename, htmlTemplate } from '../paths';
 import base from './base';
 
 const config: Configuration = {
+  devServer: {
+    contentBase: buildPath,
+  },
   devtool: 'cheap-module-source-map',
   plugins: [
     new CheckerPlugin(),
@@ -17,6 +20,7 @@ const config: Configuration = {
       title: 'Particle Systems for Fun and Profit',
     }),
     new NamedModulesPlugin(),
+    new HotModuleReplacementPlugin(),
   ],
 };
 
