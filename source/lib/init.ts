@@ -1,16 +1,16 @@
 const { cancelAnimationFrame: cAF, requestAnimationFrame: rAF } = window;
 
-export interface LoopCallback {
+interface LoopCallback {
   (currentTime: number, deltaTime: number): void;
 }
 
-export interface Loop {
+interface LoopController {
   start(): void;
   stop(): void;
   goto(frame: number): void;
 }
 
-export default function createLoop(callback: LoopCallback): Loop {
+export default function init(loop: LoopCallback): LoopController {
   const idealDeltaTime = 1000 / 60;
 
   let requestId: number;
@@ -33,7 +33,7 @@ export default function createLoop(callback: LoopCallback): Loop {
     }
 
     deltaTime = currentTime - previousTime;
-    callback(currentTime, deltaTime);
+    loop(currentTime, deltaTime);
     previousTime = currentTime;
   }
 
@@ -53,7 +53,7 @@ export default function createLoop(callback: LoopCallback): Loop {
     goto(frameNumber: number): void {
       stop();
       const currentTime = frameNumber * idealDeltaTime;
-      callback(currentTime, idealDeltaTime);
+      loop(currentTime, idealDeltaTime);
     },
   };
 }

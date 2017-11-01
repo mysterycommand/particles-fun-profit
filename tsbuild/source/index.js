@@ -1,22 +1,5 @@
-import createLoop from './lib/loop';
-const { round } = Math;
-const canvas = document.getElementById('canvas');
-const context = canvas.getContext('2d');
-const { clientWidth: w, clientHeight: h } = canvas;
-canvas.width = w;
-canvas.height = h;
-const callback = (currentTime, deltaTime) => {
-    // processInput
-    // update
-    const fps = round(1000 / deltaTime).toLocaleString('en');
-    const fontSize = 48;
-    context.clearRect(0, 0, w, h);
-    context.fillStyle = 'cyan';
-    context.font = `${fontSize}px monospace`;
-    context.textBaseline = 'bottom';
-    context.fillText(fps, 10, 10 + fontSize);
-};
-const loop = createLoop(callback);
-loop.start();
-setTimeout(loop.stop, 500);
+import loop from './app/loop';
+import init from './lib/init';
+const app = init(loop);
+app.start();
 //# sourceMappingURL=index.js.map
