@@ -1,6 +1,6 @@
 const { cancelAnimationFrame, requestAnimationFrame } = window;
 
-export default function getGameLoop(callback) {
+export default function gameLoop(callback = () => {}) {
   let requestId;
 
   let firstTime = -1;
@@ -9,9 +9,6 @@ export default function getGameLoop(callback) {
 
   function tick(currentTime) {
     requestId = requestAnimationFrame(tick);
-
-    // eslint-disable-next-line no-console
-    console.log('current time:', currentTime);
 
     if (firstTime === -1) {
       firstTime = currentTime;
@@ -34,7 +31,8 @@ export default function getGameLoop(callback) {
       previousTime = -1;
     },
 
-    start() {
+    start(reset = true) {
+      if (reset) this.reset();
       requestId = requestAnimationFrame(tick);
     },
 
