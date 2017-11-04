@@ -1,3 +1,5 @@
+import { NoEmitOnErrorsPlugin } from 'webpack';
+
 import { description } from '../../package.json';
 import { indexHtml, mainJs, sourceDir } from '../paths';
 
@@ -7,15 +9,35 @@ export const htmlPluginOptions = {
   title: description,
 };
 
+const jsRule = {
+  exclude: /node_modules/,
+  include: sourceDir,
+  test: /\.js$/,
+};
+
 export default {
-  entry: mainJs,
+  entry: ['babel-polyfill', mainJs],
 
   module: {
     rules: [
       {
-        include: sourceDir,
-        test: /\.js$/,
-        use: 'babel-loader',
+        ...jsRule,
+        enforce: 'pre',
+        use: {
+          loader: 'eslint-loader',
+          options: {
+            cache: true,
+          },
+        },
+      },
+      {
+        ...jsRule,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+          },
+        },
       },
     ],
   },
@@ -24,4 +46,6 @@ export default {
     filename: '[name].js',
     publicPath: '',
   },
+
+  plugins: [new NoEmitOnErrorsPlugin()],
 };
