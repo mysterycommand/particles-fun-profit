@@ -59,7 +59,3 @@ typings/
 
 # VSCode
 .vscode
-
-# generated files
-output
-build

@@ -9,5 +9,9 @@
   "config": {},
   "scripts": {},
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^4.10.0",
+    "eslint-config-prettier": "^2.7.0",
+    "prettier": "^1.7.4"
+  }
 }
