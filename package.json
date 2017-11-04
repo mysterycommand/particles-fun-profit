@@ -6,35 +6,7 @@
   "repository": "git@github.com:mysterycommand/particles-fun-profit.git",
   "author": "Matt Hayes <matt@mysterycommand.com>",
   "license": "MIT",
-  "scripts": {
-    "dev": "webpack-dev-server --config=config/webpack/dev.ts",
-    "precommit": "rm -rf tsbuild/ && tsc -m es2015 && git add tsbuild/"
-  },
-  "devDependencies": {
-    "@types/webpack": "^3.0.14",
-    "@types/webpack-dev-server": "^2.9.1",
-    "awesome-typescript-loader": "^3.2.3",
-    "clean-webpack-plugin": "^0.1.17",
-    "commitizen": "^2.9.6",
-    "cz-conventional-changelog": "^2.0.0",
-    "html-webpack-plugin": "^2.30.1",
-    "husky": "^0.14.3",
-    "prettier": "^1.7.4",
-    "ts-node": "^3.3.0",
-    "tslint": "^5.8.0",
-    "tslint-loader": "^3.5.3",
-    "typescript": "^2.5.3",
-    "uglifyjs-webpack-plugin": "^1.0.1",
-    "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.3",
-    "webpack-merge": "^4.1.0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "dependencies": {
-    "tslint-config-prettier": "^1.6.0"
-  }
+  "scripts": {},
+  "devDependencies": {},
+  "dependencies": {}
 }
