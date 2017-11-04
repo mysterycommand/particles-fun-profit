@@ -1,8 +1,8 @@
 import { smart } from 'webpack-merge';
-import { NamedModulesPlugin } from 'webpack';
+import HtmlPlugin from 'html-webpack-plugin';
 
 import { sourceDir } from '../paths';
-import base from './base';
+import base, { htmlPluginOptions } from './base';
 
 process.env.NODE_ENV || (process.env.NODE_ENV = 'development');
 process.env.BABEL_ENV || (process.env.BABEL_ENV = 'development');
@@ -15,5 +15,5 @@ export default smart(base, {
 
   devtool: 'cheap-eval-source-map',
 
-  plugins: [new NamedModulesPlugin()],
+  plugins: [new HtmlPlugin(htmlPluginOptions)],
 });

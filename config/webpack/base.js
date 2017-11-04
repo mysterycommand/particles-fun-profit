@@ -1,4 +1,11 @@
-import { mainJs, sourceDir } from '../paths';
+import { description } from '../../package.json';
+import { indexHtml, mainJs, sourceDir } from '../paths';
+
+export const htmlPluginOptions = {
+  inject: false,
+  template: indexHtml,
+  title: description,
+};
 
 export default {
   entry: mainJs,
