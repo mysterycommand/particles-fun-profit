@@ -1,13 +1,12 @@
-import { main, source } from '../paths';
+import { mainJs, sourceDir } from '../paths';
 
 export default {
-  entry: main,
+  entry: mainJs,
 
   module: {
     rules: [
       {
-        exclude: /node_modules/,
-        include: source,
+        include: sourceDir,
         test: /\.js$/,
         use: 'babel-loader',
       },
