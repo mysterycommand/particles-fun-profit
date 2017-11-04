@@ -2,11 +2,12 @@
   "name": "particles-fun-profit",
   "version": "2.0.0",
   "description": "Particles for Fun and Profit",
-  "private": true,
   "repository": "git@github.com:mysterycommand/particles-fun-profit.git",
   "author": "Matt Hayes <matt@mysterycommand.com>",
   "license": "MIT",
+  "private": true,
+  "config": {},
   "scripts": {},
-  "devDependencies": {},
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {}
 }
