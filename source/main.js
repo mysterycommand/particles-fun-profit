@@ -1,58 +1,54 @@
-import { atan2, cos, π, ππ, round, saw, sin } from './util/math';
+import { cos, ππ, saw, sin } from './util/math';
 import { getWaveFn } from './util/wave';
 
 import objectPool from './lib/object-pool';
 import gameLoop from './lib/game-loop';
 
-import { context, w, h } from './app/canvas';
+import { w, h } from './app/canvas';
+import render from './app/render';
 
-// const { log } = console;
-// const { stringify } = JSON;
-
-const fontSize = 48;
-context.font = `${fontSize}px monospace`;
-context.textBaseline = 'bottom';
-
-const pool = objectPool(4);
+const pool = objectPool(17);
 
 // initialize
-pool.inactive.forEach((p, i) => {
-  p.x = w / 2;
-  p.y = h / 2 - 175;
-  p.r = atan2(p.y, p.x);
-
-  p.thetaFn = getWaveFn(saw, 10000, 0, ππ, -2500 + i * 2500);
+const dist = 275;
+const period = 10000;
+pool.initialize((p, i, { length }) => {
+  const offset = -(period / 4) + i * period / length;
+  p.thetaFn = getWaveFn(saw, period, 0, ππ, offset);
   p.theta = p.thetaFn(0);
+
+  p.x = w / 2 + cos(p.theta) * dist;
+  p.y = h / 2 + sin(p.theta) * dist;
 });
+
+function isInBounds(p) {
+  const vertical = 0 < p.y && p.y < h;
+  const horizontal = 0 < p.x && p.x < w;
+  return vertical && horizontal;
+}
 
 function game(currentTime, deltaTime) {
   // activate
-  pool.inactive.forEach(p => (p.active = true));
-  // log(stringify(pool.active, null, 2));
+  pool.activate(p => {
+    p.active = isInBounds(p);
+  });
 
   // update
-  pool.active.forEach(p => {
-    p.x = w / 2 + cos(p.theta) * 175;
-    p.y = h / 2 + sin(p.theta) * 175;
+  pool.update(p => {
     p.theta = p.thetaFn(currentTime);
+    p.x = w / 2 + cos(p.theta) * dist;
+    p.y = h / 2 + sin(p.theta) * dist;
   });
 
   // deactivate
-  pool.active.filter(p => p.x > w || p.y > h).forEach(p => (p.active = false));
+  pool.deactivate(p => {
+    p.active = !isInBounds(p);
+  });
 
   // render
-  context.clearRect(0, 0, w, h);
-
-  const fps = round(1000 / deltaTime).toLocaleString('en');
-  context.fillStyle = 'cyan';
-  context.fillText(fps, 10, 10 + fontSize);
-
-  context.fillStyle = 'magenta';
-  pool.active.forEach(p => {
-    context.beginPath();
-    context.arc(p.x, p.y, 10, 0, π * 2);
-    context.closePath();
-    context.fill();
+  render({
+    particles: pool.active,
+    deltaTime,
   });
 }
 

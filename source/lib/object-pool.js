@@ -10,8 +10,20 @@ export default function objectPool(size = 1) {
       return pool.filter(({ active }) => active);
     },
 
-    get inactive() {
-      return pool.filter(({ active }) => !active);
+    initialize(fn) {
+      pool.forEach(fn);
+    },
+
+    activate(fn) {
+      pool.filter(({ active }) => !active).forEach(fn);
+    },
+
+    update(fn) {
+      pool.filter(({ active }) => active).forEach(fn);
+    },
+
+    deactivate(fn) {
+      pool.filter(({ active }) => active).forEach(fn);
     },
   };
 }
