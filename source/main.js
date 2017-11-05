@@ -4,15 +4,11 @@ import { getWaveFn } from './util/wave';
 import objectPool from './lib/object-pool';
 import gameLoop from './lib/game-loop';
 
+import { context, w, h } from './app/canvas';
+
 // const { log } = console;
 // const { stringify } = JSON;
 
-const canvas = document.getElementById('canvas');
-const { clientWidth: w, clientHeight: h } = canvas;
-canvas.width = w;
-canvas.height = h;
-
-const context = canvas.getContext('2d');
 const fontSize = 48;
 context.font = `${fontSize}px monospace`;
 context.textBaseline = 'bottom';
@@ -61,5 +57,5 @@ function game(currentTime, deltaTime) {
 }
 
 const loop = gameLoop(game);
-// loop.goto(0);
-loop.start();
+loop.goto(0);
+// loop.start();
