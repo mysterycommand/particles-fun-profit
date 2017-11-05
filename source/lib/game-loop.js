@@ -1,5 +1,7 @@
 const { cancelAnimationFrame, requestAnimationFrame } = window;
 
+const IDEAL_FRAME_TIME = 1000 / 60;
+
 export default function gameLoop(callback = () => {}) {
   let requestId;
 
@@ -38,6 +40,12 @@ export default function gameLoop(callback = () => {}) {
 
     stop() {
       cancelAnimationFrame(requestId);
+    },
+
+    goto(frame) {
+      const currentTime = IDEAL_FRAME_TIME * frame;
+      const deltatTime = IDEAL_FRAME_TIME;
+      callback(currentTime, deltatTime);
     },
   };
 }
