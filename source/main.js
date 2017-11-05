@@ -7,7 +7,7 @@ import gameLoop from './lib/game-loop';
 import { w, h } from './app/canvas';
 import render from './app/render';
 
-const pool = objectPool(17);
+const pool = objectPool(18);
 
 // initialize
 const dist = 275;
@@ -42,7 +42,7 @@ function game(currentTime, deltaTime) {
 
   // deactivate
   pool.deactivate(p => {
-    p.active = !isInBounds(p);
+    p.active = isInBounds(p);
   });
 
   // render
@@ -53,5 +53,5 @@ function game(currentTime, deltaTime) {
 }
 
 const loop = gameLoop(game);
-loop.goto(0);
-// loop.start();
+// loop.goto(0);
+loop.start();

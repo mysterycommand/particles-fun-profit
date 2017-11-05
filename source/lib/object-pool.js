@@ -19,7 +19,7 @@ export default function objectPool(size = 1) {
     },
 
     update(fn) {
-      pool.filter(({ active }) => active).forEach(fn);
+      pool.forEach(fn);
     },
 
     deactivate(fn) {
