@@ -1,8 +1,11 @@
+import { atan2, cos, π, ππ, round, saw, sin } from './util/math';
+import { getWaveFn } from './util/wave';
+
 import objectPool from './lib/object-pool';
 import gameLoop from './lib/game-loop';
 
-const { log } = console;
-const { atan2, cos, PI: π, round, sin } = Math;
+// const { log } = console;
+// const { stringify } = JSON;
 
 const canvas = document.getElementById('canvas');
 const { clientWidth: w, clientHeight: h } = canvas;
@@ -14,27 +17,28 @@ const fontSize = 48;
 context.font = `${fontSize}px monospace`;
 context.textBaseline = 'bottom';
 
-const pool = objectPool();
+const pool = objectPool(4);
 
 // initialize
-pool.inactive.forEach(p => {
+pool.inactive.forEach((p, i) => {
   p.x = w / 2;
   p.y = h / 2 - 175;
   p.r = atan2(p.y, p.x);
-  p.t = -π / 2;
+
+  p.thetaFn = getWaveFn(saw, 10000, 0, ππ, -2500 + i * 2500);
+  p.theta = p.thetaFn(0);
 });
 
 function game(currentTime, deltaTime) {
-  log(currentTime, deltaTime);
-
   // activate
   pool.inactive.forEach(p => (p.active = true));
+  // log(stringify(pool.active, null, 2));
 
   // update
   pool.active.forEach(p => {
-    p.x = w / 2 + cos(p.t) * 175;
-    p.y = h / 2 + sin(p.t) * 175;
-    p.t += π / 180;
+    p.x = w / 2 + cos(p.theta) * 175;
+    p.y = h / 2 + sin(p.theta) * 175;
+    p.theta = p.thetaFn(currentTime);
   });
 
   // deactivate
@@ -52,10 +56,10 @@ function game(currentTime, deltaTime) {
     context.beginPath();
     context.arc(p.x, p.y, 10, 0, π * 2);
     context.closePath();
+    context.fill();
   });
-  context.fill();
 }
 
 const loop = gameLoop(game);
-loop.goto(0);
-// loop.start();
+// loop.goto(0);
+loop.start();

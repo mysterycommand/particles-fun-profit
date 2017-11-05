@@ -12,17 +12,12 @@ export default function gameLoop(callback = () => {}) {
   function tick(currentTime) {
     requestId = requestAnimationFrame(tick);
 
-    if (firstTime === -1) {
-      firstTime = currentTime;
-    }
-
+    if (firstTime === -1) firstTime = currentTime;
     currentTime -= firstTime;
 
-    if (previousTime === -1) {
-      previousTime = currentTime;
-    }
-
+    if (previousTime === -1) previousTime = currentTime;
     deltaTime = currentTime - previousTime;
+
     callback(currentTime, deltaTime);
     previousTime = currentTime;
   }
