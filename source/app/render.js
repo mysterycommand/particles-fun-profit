@@ -9,8 +9,10 @@ export default function render({ deltaTime, particles }) {
   context.clearRect(0, 0, w, h);
 
   const fps = m.round(1000 / deltaTime).toLocaleString('en');
+  const num = particles.length.toLocaleString('en');
   context.fillStyle = 'white';
-  context.fillText(`${fps}fps`, 10, 10 + fontSize);
+  context.fillText(`particles: ${num}`, 10, 10 + fontSize);
+  context.fillText(`fps: ${fps}`, 10, (10 + fontSize) * 2);
 
   // context.fillStyle = `hsl(${floor(random() * 360)},100%,50%)`;
   particles.forEach(({ px, py, vx, vy }) => {

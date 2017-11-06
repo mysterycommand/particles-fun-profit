@@ -7,7 +7,7 @@ import objectPool from './lib/object-pool';
 import { canvas, w, h } from './app/canvas';
 import render from './app/render';
 
-let mouseDown = false;
+let mouseDown = true;
 let mouseX = w / 2;
 let mouseY = h / 2;
 
@@ -55,8 +55,8 @@ const pool = objectPool(5000);
 function reset(p) {
   p.px = mouseX;
   p.py = mouseY;
-  p.vx = (random() * 30 - 15) * (mouseDown ? 2 : 1);
-  p.vy = (random() * 30 - 15) * (mouseDown ? 2 : 1);
+  p.vx = random() * 30 - 15;
+  p.vy = random() * 30 - 15;
 }
 
 function isInBounds({ px, py }) {
@@ -65,15 +65,15 @@ function isInBounds({ px, py }) {
   return vertical && horizontal;
 }
 
-const drag = 0.9;
-const grav = 0.4;
+// const drag = 0.9;
+// const grav = 0.4;
 
 // initialize
 pool.initialize(reset);
 
 function game(currentTime, deltaTime) {
   let count = 0;
-  let total = mouseDown ? 100 : 100;
+  let total = mouseDown ? 500 : 1;
 
   pool.update(p => {
     // activate
@@ -87,10 +87,10 @@ function game(currentTime, deltaTime) {
     p.px += p.vx;
     p.py += p.vy;
 
-    p.vx *= drag;
-    p.vy *= drag;
+    // p.vx *= drag;
+    // p.vy *= drag;
 
-    p.vy += grav;
+    // p.vy += grav;
 
     // deactivate
     if (p.active) p.active = isInBounds(p);
