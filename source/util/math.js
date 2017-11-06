@@ -1,4 +1,4 @@
-export const { atan2, cos, hypot, PI: π, random, round, sin } = Math;
+export const { atan2, ceil, cos, floor, hypot, PI: π, random, round, sin } = Math;
 export const ππ = 2 * π; // 360º
 export const hπ = π / 2; // 90º
 

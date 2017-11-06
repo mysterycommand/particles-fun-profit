@@ -1,47 +1,96 @@
 import { /* cos, ππ,  */ random /* , saw, sin */ } from './util/math';
 // import { getWaveFn } from './util/wave';
 
-import gameLoop, { IDEAL_FRAME_TIME as idf } from './lib/game-loop';
+import gameLoop from './lib/game-loop';
 import objectPool from './lib/object-pool';
 
-import { w, h } from './app/canvas';
+import { canvas, w, h } from './app/canvas';
 import render from './app/render';
 
-const pool = objectPool(50);
+let mouseDown = false;
+let mouseX = w / 2;
+let mouseY = h / 2;
 
-function initialize(p) {
-  p.px = w / 2;
-  p.py = h / 2;
-  p.vx = random() * 30 - 15;
-  p.vy = random() * 30 - 15;
+function onMouseDown(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  mouseDown = true;
+}
+
+function onMouseUp(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  mouseDown = false;
+}
+
+function onMouseMove(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  mouseX = event.offsetX;
+  mouseY = event.offsetY;
+}
+
+function onMouseEnter(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  canvas.addEventListener('mousemove', onMouseMove);
+}
+
+function onMouseLeave(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  canvas.removeEventListener('mousemove', onMouseMove);
+  mouseX = w / 2;
+  mouseY = h / 2;
+}
+
+window.addEventListener('mousedown', onMouseDown);
+window.addEventListener('mouseup', onMouseUp);
+
+canvas.addEventListener('mouseenter', onMouseEnter);
+canvas.addEventListener('mouseleave', onMouseLeave);
+
+const pool = objectPool(5000);
+
+function reset(p) {
+  p.px = mouseX;
+  p.py = mouseY;
+  p.vx = (random() * 30 - 15) * (mouseDown ? 2 : 1);
+  p.vy = (random() * 30 - 15) * (mouseDown ? 2 : 1);
 }
 
 function isInBounds({ px, py }) {
-  const vertical = 0 < py && py < h;
+  const vertical = py < h;
   const horizontal = 0 < px && px < w;
   return vertical && horizontal;
 }
 
+const drag = 0.9;
+const grav = 0.4;
+
 // initialize
-pool.initialize(initialize);
+pool.initialize(reset);
 
 function game(currentTime, deltaTime) {
+  let count = 0;
+  let total = mouseDown ? 100 : 100;
+
   pool.update(p => {
     // activate
-    if (!p.active) {
-      initialize(p);
-      p.active = isInBounds(p);
-
-      // // eslint-disable-next-line no-console
-      // console.log(isInBounds(p), JSON.stringify(p, null, 2));
+    if (count < total && !p.active) {
+      reset(p);
+      p.active = true;
+      count++;
     }
 
     // update
     p.px += p.vx;
     p.py += p.vy;
-    p.vx *= 0.99 * (deltaTime / idf);
-    p.vy += 1 * (deltaTime / idf);
-    p.vy *= 0.99 * (deltaTime / idf);
+
+    p.vx *= drag;
+    p.vy *= drag;
+
+    p.vy += grav;
 
     // deactivate
     if (p.active) p.active = isInBounds(p);
@@ -57,6 +106,6 @@ function game(currentTime, deltaTime) {
 const loop = gameLoop(game);
 // loop.start();
 // loop.goto(0);
-for (let i = 0; i < 8; ++i) {
+for (let i = 0; i < 10; ++i) {
   loop.goto(i);
 }
