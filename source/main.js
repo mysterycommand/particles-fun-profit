@@ -1,41 +1,47 @@
-import { cos, ππ, saw, sin } from './util/math';
-import { getWaveFn } from './util/wave';
+import { /* cos, ππ,  */ random /* , saw, sin */ } from './util/math';
+// import { getWaveFn } from './util/wave';
 
+import gameLoop, { IDEAL_FRAME_TIME as idf } from './lib/game-loop';
 import objectPool from './lib/object-pool';
-import gameLoop from './lib/game-loop';
 
 import { w, h } from './app/canvas';
 import render from './app/render';
 
-const pool = objectPool(180);
+const pool = objectPool(50);
 
-// initialize
-const dist = 175;
-const period = 50000;
-pool.initialize((p, i, { length }) => {
-  const offset = -(period / 4) + i * period / length;
-  p.thetaFn = getWaveFn(saw, period, 0, ππ, offset);
-  p.theta = p.thetaFn(0);
+function initialize(p) {
+  p.px = w / 2;
+  p.py = h / 2;
+  p.vx = random() * 30 - 15;
+  p.vy = random() * 30 - 15;
+}
 
-  p.x = w / 2 + cos(p.theta) * dist;
-  p.y = h / 2 + sin(p.theta) * dist;
-});
-
-function isInBounds(p) {
-  const vertical = 0 < p.y && p.y < h;
-  const horizontal = 0 < p.x && p.x < w;
+function isInBounds({ px, py }) {
+  const vertical = 0 < py && py < h;
+  const horizontal = 0 < px && px < w;
   return vertical && horizontal;
 }
+
+// initialize
+pool.initialize(initialize);
 
 function game(currentTime, deltaTime) {
   pool.update(p => {
     // activate
-    if (!p.active) p.active = isInBounds(p);
+    if (!p.active) {
+      initialize(p);
+      p.active = isInBounds(p);
+
+      // // eslint-disable-next-line no-console
+      // console.log(isInBounds(p), JSON.stringify(p, null, 2));
+    }
 
     // update
-    p.theta = p.thetaFn(currentTime);
-    p.x = w / 2 + cos(p.theta) * dist;
-    p.y = h / 2 + sin(p.theta) * dist;
+    p.px += p.vx;
+    p.py += p.vy;
+    p.vx *= 0.99 * (deltaTime / idf);
+    p.vy += 1 * (deltaTime / idf);
+    p.vy *= 0.99 * (deltaTime / idf);
 
     // deactivate
     if (p.active) p.active = isInBounds(p);
@@ -50,4 +56,7 @@ function game(currentTime, deltaTime) {
 
 const loop = gameLoop(game);
 // loop.start();
-loop.goto(0);
+// loop.goto(0);
+for (let i = 0; i < 8; ++i) {
+  loop.goto(i);
+}

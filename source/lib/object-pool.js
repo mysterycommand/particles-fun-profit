@@ -20,6 +20,9 @@ export default function objectPool(size = 1) {
 
     update(fn) {
       pool.forEach(fn);
+
+      // // eslint-disable-next-line no-console
+      // console.log(JSON.stringify(pool, null, 2));
     },
   };
 }
