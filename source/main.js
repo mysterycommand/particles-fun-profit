@@ -7,11 +7,11 @@ import gameLoop from './lib/game-loop';
 import { w, h } from './app/canvas';
 import render from './app/render';
 
-const pool = objectPool(18);
+const pool = objectPool(180);
 
 // initialize
-const dist = 275;
-const period = 10000;
+const dist = 175;
+const period = 50000;
 pool.initialize((p, i, { length }) => {
   const offset = -(period / 4) + i * period / length;
   p.thetaFn = getWaveFn(saw, period, 0, ππ, offset);
@@ -28,21 +28,17 @@ function isInBounds(p) {
 }
 
 function game(currentTime, deltaTime) {
-  // activate
-  pool.activate(p => {
-    p.active = isInBounds(p);
-  });
-
-  // update
   pool.update(p => {
+    // activate
+    if (!p.active) p.active = isInBounds(p);
+
+    // update
     p.theta = p.thetaFn(currentTime);
     p.x = w / 2 + cos(p.theta) * dist;
     p.y = h / 2 + sin(p.theta) * dist;
-  });
 
-  // deactivate
-  pool.deactivate(p => {
-    p.active = isInBounds(p);
+    // deactivate
+    if (p.active) p.active = isInBounds(p);
   });
 
   // render
@@ -53,5 +49,5 @@ function game(currentTime, deltaTime) {
 }
 
 const loop = gameLoop(game);
-// loop.goto(0);
-loop.start();
+// loop.start();
+loop.goto(0);
