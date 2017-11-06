@@ -11,7 +11,8 @@
     "dev": "webpack-dev-server --config config/webpack/development.babel.js"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0"
+    "babel-polyfill": "^6.26.0",
+    "seedrandom": "^2.4.3"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
