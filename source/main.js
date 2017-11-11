@@ -5,7 +5,6 @@ import objectPool from './lib/object-pool';
 
 import { w, h } from './app/canvas';
 import render from './app/render';
-import { setTimeout } from 'timers';
 
 let shouldActivate = false;
 let activeX = w / 2;
@@ -33,14 +32,24 @@ function isInBounds({ px, py }) {
   return vertical && horizontal;
 }
 
+function isVisible({ alpha }) {
+  return alpha > 0.01;
+}
+
+function isActive({ active }) {
+  return active;
+}
+
 const pool = objectPool(5000);
-pool.initialize(reset);
+
+// initialize
+pool.forEach(reset);
 
 function game(currentTime, deltaTime) {
   let numActivated = 0;
   let numToActivate = shouldActivate ? 100 : 0;
 
-  pool.update(p => {
+  pool.forEach(p => {
     // activate
     if (numActivated < numToActivate && !p.active) {
       reset(p);
@@ -59,23 +68,23 @@ function game(currentTime, deltaTime) {
     p.alpha *= fade;
 
     // deactivate
-    if (p.active) p.active = isInBounds(p) && p.alpha > 0.01;
+    if (p.active) p.active = isInBounds(p) && isVisible(p);
   });
 
   render({
-    particles: pool.active,
+    particles: pool.filter(isActive),
     deltaTime,
   });
 }
 
 function boom() {
   setTimeout(boom, 1000 + random() * 1000);
-  shouldActivate = !shouldActivate;
-  setTimeout(() => (shouldActivate = !shouldActivate), 50);
+  shouldActivate = true;
+  setTimeout(() => (shouldActivate = false), 50);
   activeX = w * 0.2 + random() * (w * 0.6);
   activeY = h * 0.2 + random() * (h * 0.6);
 }
+boom();
 
 const loop = gameLoop(game);
 loop.start();
-boom();

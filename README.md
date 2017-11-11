@@ -53,21 +53,17 @@ It should look like this:
 import objectPool from './lib/object-pool';
 import gameLoop from './lib/game-loop';
 
-import { init, update, render } from './app/particles/whatever-type';
+import { init, update, render } from './app/whatever';
+
+function game(t, dt) {
+  pool.update(t, dt);
+  const state = { t, dt, ui, particles: pool.active };
+  render(state);
+}
 
 const pool = objectPool(size);
-const loop = gameLoop((t, dt) => {
-  const ui = {
-    mouse: getMouse(),
-    keys: getKeys(),
-  };
+const loop = gameLoop(game);
 
-  const particles = particles: pool.update(t, dt, ui);
-
-  const state = { t, dt, ui, particles };
-  render(state);
-});
-
-pool.init();
+pool.initialize(init);
 loop.start();
 ```
