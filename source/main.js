@@ -50,7 +50,7 @@ window.addEventListener('mouseup', onMouseUp);
 canvas.addEventListener('mouseenter', onMouseEnter);
 canvas.addEventListener('mouseleave', onMouseLeave);
 
-const pool = objectPool(5000);
+const pool = objectPool(500);
 
 function reset(p) {
   p.px = mouseX;

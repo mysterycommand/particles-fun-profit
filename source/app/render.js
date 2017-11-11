@@ -25,7 +25,8 @@ export default function render({ deltaTime, particles }) {
     context.translate(px, py);
     context.rotate(angle);
 
-    const l = m.hypot(vx, vy);
+    const l = m.hypot(vx, vy) * 2;
+    console.log(px, py, vx, vy, l);
     context.rect(-l / 2 + 2, -2, l - 4, 4);
     context.fill();
 
