@@ -1,4 +1,4 @@
-import { /* cos, ππ,  */ random /* , saw, sin */ } from './util/math';
+import { cos, ππ, random, /* saw, */ sin } from './util/math';
 // import { getWaveFn } from './util/wave';
 
 import gameLoop from './lib/game-loop';
@@ -50,13 +50,16 @@ window.addEventListener('mouseup', onMouseUp);
 canvas.addEventListener('mouseenter', onMouseEnter);
 canvas.addEventListener('mouseleave', onMouseLeave);
 
-const pool = objectPool(500);
+const pool = objectPool(1000);
 
 function reset(p) {
   p.px = mouseX;
   p.py = mouseY;
-  p.vx = random() * 30 - 15;
-  p.vy = random() * 30 - 15;
+
+  const theta = random() * ππ;
+  const radius = 10 + random() * 20;
+  p.vx = radius * cos(theta);
+  p.vy = radius * sin(theta);
 }
 
 function isInBounds({ px, py }) {
@@ -65,15 +68,15 @@ function isInBounds({ px, py }) {
   return vertical && horizontal;
 }
 
-// const drag = 0.9;
-// const grav = 0.4;
+const drag = 0.9;
+const grav = 0.4;
 
 // initialize
 pool.initialize(reset);
 
 function game(currentTime, deltaTime) {
   let count = 0;
-  let total = mouseDown ? 500 : 1;
+  let total = mouseDown ? 50 : 1;
 
   pool.update(p => {
     // activate
@@ -87,16 +90,15 @@ function game(currentTime, deltaTime) {
     p.px += p.vx;
     p.py += p.vy;
 
-    // p.vx *= drag;
-    // p.vy *= drag;
+    p.vx *= drag;
+    p.vy *= drag;
 
-    // p.vy += grav;
+    p.vy += grav;
 
     // deactivate
     if (p.active) p.active = isInBounds(p);
   });
 
-  // render
   render({
     particles: pool.active,
     deltaTime,
@@ -104,8 +106,13 @@ function game(currentTime, deltaTime) {
 }
 
 const loop = gameLoop(game);
-// loop.start();
+loop.start();
 // loop.goto(0);
-for (let i = 0; i < 10; ++i) {
-  loop.goto(i);
-}
+// for (let i = 0; i < 10; ++i) {
+//   loop.goto(i);
+// }
+// // render
+// render({
+//   particles: pool.active,
+//   deltaTime: 1000 / 60,
+// });
