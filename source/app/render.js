@@ -5,14 +5,19 @@ const fontSize = 24;
 bufferContext.font = `${fontSize}px monospace`;
 bufferContext.textBaseline = 'bottom';
 
-export default function render({ deltaTime, particles }) {
+export default function render({ deltaTime, particles, size }) {
   bufferContext.clearRect(0, 0, w, h);
 
   const fps = m.round(1000 / deltaTime).toLocaleString('en');
-  const num = particles.length.toLocaleString('en');
+  const { length: len } = particles;
+  const num = len.toLocaleString('en');
 
-  bufferContext.fillStyle = 'white';
+  const particlePercent = len / size;
+  bufferContext.fillStyle = `hsl(${m.floor((1 - particlePercent) * 120)},100%,50%)`;
   bufferContext.fillText(`particles: ${num}`, 10, 10 + fontSize);
+
+  const fpsPercent = 1000 / deltaTime / 60;
+  bufferContext.fillStyle = `hsl(${m.floor(fpsPercent * 120)},100%,50%)`;
   bufferContext.fillText(`fps: ${fps}`, 10, (10 + fontSize) * 2);
 
   // context.fillStyle = `hsl(${floor(random() * 360)},100%,50%)`;

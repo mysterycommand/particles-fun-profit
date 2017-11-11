@@ -40,14 +40,15 @@ function isActive({ active }) {
   return active;
 }
 
-const pool = objectPool(5000);
+const size = 500;
+const pool = objectPool(size);
 
 // initialize
 pool.forEach(reset);
 
 function game(currentTime, deltaTime) {
   let numActivated = 0;
-  let numToActivate = shouldActivate ? 100 : 0;
+  let numToActivate = shouldActivate ? size * 0.2 : 0;
 
   pool.forEach(p => {
     // activate
@@ -72,8 +73,9 @@ function game(currentTime, deltaTime) {
   });
 
   render({
-    particles: pool.filter(isActive),
     deltaTime,
+    particles: pool.filter(isActive),
+    size,
   });
 }
 
