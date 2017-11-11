@@ -7,7 +7,7 @@ import objectPool from './lib/object-pool';
 import { canvas, w, h } from './app/canvas';
 import render from './app/render';
 
-let mouseDown = true;
+let mouseDown = false;
 let mouseX = w / 2;
 let mouseY = h / 2;
 
@@ -50,11 +50,12 @@ window.addEventListener('mouseup', onMouseUp);
 canvas.addEventListener('mouseenter', onMouseEnter);
 canvas.addEventListener('mouseleave', onMouseLeave);
 
-const pool = objectPool(1000);
+const pool = objectPool(5000);
 
 function reset(p) {
   p.px = mouseX;
   p.py = mouseY;
+  p.alpha = 1;
 
   const theta = random() * ππ;
   const radius = 10 + random() * 20;
@@ -70,13 +71,14 @@ function isInBounds({ px, py }) {
 
 const drag = 0.9;
 const grav = 0.4;
+const fade = 0.9;
 
 // initialize
 pool.initialize(reset);
 
 function game(currentTime, deltaTime) {
   let count = 0;
-  let total = mouseDown ? 50 : 1;
+  let total = mouseDown ? 50 : 0;
 
   pool.update(p => {
     // activate
@@ -94,9 +96,10 @@ function game(currentTime, deltaTime) {
     p.vy *= drag;
 
     p.vy += grav;
+    p.alpha *= fade;
 
     // deactivate
-    if (p.active) p.active = isInBounds(p);
+    if (p.active) p.active = isInBounds(p) && p.alpha > 0.01;
   });
 
   render({

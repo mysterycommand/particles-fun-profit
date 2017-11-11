@@ -15,12 +15,12 @@ export default function render({ deltaTime, particles }) {
   context.fillText(`fps: ${fps}`, 10, (10 + fontSize) * 2);
 
   // context.fillStyle = `hsl(${floor(random() * 360)},100%,50%)`;
-  particles.forEach(({ px, py, vx, vy }) => {
+  particles.forEach(({ px, py, vx, vy, alpha }) => {
     context.save();
 
     context.beginPath();
     const angle = m.atan2(vy, vx);
-    context.fillStyle = `hsl(${m.toDegrees(angle + m.π)},100%,50%)`;
+    context.fillStyle = `hsla(${m.toDegrees(angle + m.π)},100%,50%,${alpha})`;
 
     context.translate(px, py);
     context.rotate(angle);
