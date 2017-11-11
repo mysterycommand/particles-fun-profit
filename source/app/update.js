@@ -8,11 +8,11 @@ let shouldBoom = false;
 let boomX = w / 2;
 let boomY = h / 2;
 
-const drag = 0.95;
-const grav = 0.2;
-const fade = 0.995;
+const drag = 0.95; // 0.95 / IDEAL_FRAME_TIME;
+const grav = 0.2; // 0.2 / IDEAL_FRAME_TIME;
+const fade = 0.995; // 0.995 / IDEAL_FRAME_TIME;
 
-const size = 500;
+const size = 50000;
 const minToActivate = 0;
 const maxToActivate = size * 0.2;
 const pool = objectPool(size);
@@ -72,6 +72,7 @@ export default function update(currentTime, deltaTime) {
     p.px += p.vx;
     p.py += p.vy;
 
+    // const t = IDEAL_FRAME_TIME / deltaTime;
     p.vx *= drag;
     p.vy *= drag;
 
