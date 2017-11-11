@@ -1,7 +1,7 @@
-import sr from 'seedrandom';
+import seedRandom from 'seedrandom';
 import { name, version } from '../../package.json';
 
-export const random = sr(`${name}@${version}`);
+export const random = seedRandom(`${name}@${version}`);
 export const { atan2, ceil, cos, floor, hypot, PI: π, round, sin } = Math;
 export const ππ = 2 * π; // 360º
 export const hπ = π / 2; // 90º

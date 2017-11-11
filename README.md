@@ -45,3 +45,29 @@ while (true)
 ```
 > The game plays at a consistent rate on different hardware.
 > Players with faster machines are rewarded with smoother gameplay.
+
+- - -
+
+It should look like this:
+```js
+import objectPool from './lib/object-pool';
+import gameLoop from './lib/game-loop';
+
+import { init, update, render } from './app/particles/whatever-type';
+
+const pool = objectPool(size);
+const loop = gameLoop((t, dt) => {
+  const ui = {
+    mouse: getMouse(),
+    keys: getKeys(),
+  };
+
+  const particles = particles: pool.update(t, dt, ui);
+
+  const state = { t, dt, ui, particles };
+  render(state);
+});
+
+pool.init();
+loop.start();
+```
