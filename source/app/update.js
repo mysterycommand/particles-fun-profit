@@ -1,6 +1,6 @@
 import { cos, ππ, random, sin } from '../util/math';
 import objectPool from '../lib/object-pool';
-import { IDEAL_FRAME_TIME } from '../lib/game-loop';
+// import { IDEAL_FRAME_TIME } from '../lib/game-loop';
 
 import { w, h } from './canvas';
 
@@ -8,9 +8,14 @@ let shouldBoom = false;
 let boomX = w / 2;
 let boomY = h / 2;
 
-const drag = 0.95 / IDEAL_FRAME_TIME;
-const grav = 0.2 / IDEAL_FRAME_TIME;
-const fade = 0.995 / IDEAL_FRAME_TIME;
+const drag = 0.95;
+const grav = 0.2;
+const fade = 0.995;
+
+const size = 500;
+const minToActivate = 0;
+const maxToActivate = size * 0.2;
+const pool = objectPool(size);
 
 function reset(p) {
   p.px = boomX;
@@ -38,9 +43,6 @@ function isActive({ active }) {
   return active;
 }
 
-const size = 500;
-const pool = objectPool(size);
-
 // initialize
 pool.forEach(reset);
 
@@ -55,7 +57,8 @@ boom();
 
 export default function update(currentTime, deltaTime) {
   let numActivated = 0;
-  let numToActivate = shouldBoom ? size * 0.2 : 0;
+  let numToActivate = shouldBoom ? maxToActivate : minToActivate;
+  // if (deltaTime > IDEAL_FRAME_TIME) console.log(deltaTime);
 
   pool.forEach(p => {
     // activate
@@ -69,11 +72,11 @@ export default function update(currentTime, deltaTime) {
     p.px += p.vx;
     p.py += p.vy;
 
-    p.vx *= drag * deltaTime;
-    p.vy *= drag * deltaTime;
+    p.vx *= drag;
+    p.vy *= drag;
 
-    p.vy += grav * deltaTime;
-    p.alpha *= fade * deltaTime;
+    p.vy += grav;
+    p.alpha *= fade;
 
     // deactivate
     if (p.active) p.active = isInBounds(p) && isVisible(p);
