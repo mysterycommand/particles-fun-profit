@@ -1,5 +1,6 @@
 import { cos, ππ, random, sin } from '../util/math';
 import objectPool from '../lib/object-pool';
+import { IDEAL_FRAME_TIME } from '../lib/game-loop';
 
 import { w, h } from './canvas';
 
@@ -7,9 +8,9 @@ let shouldBoom = false;
 let boomX = w / 2;
 let boomY = h / 2;
 
-const drag = 0.95;
-const grav = 0.2;
-const fade = 0.995;
+const drag = 0.95 / IDEAL_FRAME_TIME;
+const grav = 0.2 / IDEAL_FRAME_TIME;
+const fade = 0.995 / IDEAL_FRAME_TIME;
 
 function reset(p) {
   p.px = boomX;
@@ -68,11 +69,11 @@ export default function update(currentTime, deltaTime) {
     p.px += p.vx;
     p.py += p.vy;
 
-    p.vx *= drag;
-    p.vy *= drag;
+    p.vx *= drag * deltaTime;
+    p.vy *= drag * deltaTime;
 
-    p.vy += grav;
-    p.alpha *= fade;
+    p.vy += grav * deltaTime;
+    p.alpha *= fade * deltaTime;
 
     // deactivate
     if (p.active) p.active = isInBounds(p) && isVisible(p);
