@@ -68,22 +68,26 @@ export default function update(currentTime, deltaTime) {
       numActivated++;
     }
 
-    // update
-    p.px += p.vx;
-    p.py += p.vy;
-
+    // update forces
     // const t = IDEAL_FRAME_TIME / deltaTime;
+
+    // apply forces
     p.vx *= drag;
     p.vy *= drag;
 
     p.vy += grav;
     p.alpha *= fade;
 
+    // update
+    p.px += p.vx;
+    p.py += p.vy;
+
     // deactivate
     if (p.active) p.active = isInBounds(p) && isVisible(p);
   });
 
   return {
+    currentTime,
     deltaTime,
     particles: pool.filter(isActive),
     size,
