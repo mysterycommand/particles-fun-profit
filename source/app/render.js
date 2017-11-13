@@ -6,7 +6,7 @@ const fontSize = 24;
 bufferContext.font = `${fontSize}px monospace`;
 bufferContext.textBaseline = 'bottom';
 
-const maxEllapsed = IDEAL_FRAME_TIME / 8;
+const maxElapsed = IDEAL_FRAME_TIME;
 
 let averageFps = 1000 / IDEAL_FRAME_TIME;
 let displayFps = averageFps;
@@ -29,9 +29,8 @@ export default function render({ currentTime, deltaTime, particles, size }) {
   bufferContext.fillStyle = `hsl(${m.floor(fpsPercent * 120)},100%,50%)`;
   bufferContext.fillText(`fps: ${displayFps.toFixed(2)}`, 10, (10 + fontSize) * 2);
 
-  // context.fillStyle = `hsl(${floor(random() * 360)},100%,50%)`;
   const startRender = performance.now();
-  let ellapsed = performance.now() - startRender;
+  let elapsed = performance.now() - startRender;
 
   particles.some(({ px, py, vx, vy, alpha }) => {
     bufferContext.save();
@@ -43,18 +42,15 @@ export default function render({ currentTime, deltaTime, particles, size }) {
     bufferContext.translate(px, py);
     bufferContext.rotate(angle);
 
-    const l = m.hypot(vx, vy) * 2;
+    const l = m.hypot(vx, vy) * 80;
     bufferContext.rect(-l / 2 + 2, -2, l - 4, 4);
     bufferContext.fill();
 
     bufferContext.restore();
 
-    ellapsed = performance.now() - startRender;
-    return ellapsed > maxEllapsed;
+    elapsed = performance.now() - startRender;
+    return elapsed > maxElapsed;
   });
-
-  // I think this needs to be smart enough to pick up where it left off?
-  // if (ellapsed > maxEllapsed) return;
 
   targetContext.clearRect(0, 0, w, h);
   targetContext.drawImage(buffer, 0, 0);

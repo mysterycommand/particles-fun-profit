@@ -1,6 +1,6 @@
 import { cos, ππ, random, sin } from '../util/math';
 import objectPool from '../lib/object-pool';
-// import { IDEAL_FRAME_TIME } from '../lib/game-loop';
+import { IDEAL_FRAME_TIME } from '../lib/game-loop';
 
 import { w, h } from './canvas';
 
@@ -8,14 +8,14 @@ let shouldBoom = false;
 let boomX = w / 2;
 let boomY = h / 2;
 
-const drag = 0.95; // 0.95 / IDEAL_FRAME_TIME;
-const grav = 0.2; // 0.2 / IDEAL_FRAME_TIME;
-const fade = 0.995; // 0.995 / IDEAL_FRAME_TIME;
+const friction = 0.975;
+const gravity = 0.01 / IDEAL_FRAME_TIME;
+const decay = 0.975;
 
-const size = 50000;
+const size = 1000;
 const minToActivate = 0;
 const maxToActivate = size * 0.2;
-const pool = objectPool(size);
+const pool = objectPool(size, { active: false });
 
 function reset(p) {
   p.px = boomX;
@@ -23,7 +23,7 @@ function reset(p) {
   p.alpha = 1;
 
   const theta = random() * ππ;
-  const radius = 10 + random() * 20;
+  const radius = (10 + random() * 20) / IDEAL_FRAME_TIME;
 
   p.vx = radius * cos(theta);
   p.vy = radius * sin(theta);
@@ -58,7 +58,8 @@ boom();
 export default function update(currentTime, deltaTime) {
   let numActivated = 0;
   let numToActivate = shouldBoom ? maxToActivate : minToActivate;
-  // if (deltaTime > IDEAL_FRAME_TIME) console.log(deltaTime);
+
+  if (deltaTime > IDEAL_FRAME_TIME) deltaTime = IDEAL_FRAME_TIME;
 
   pool.forEach(p => {
     // activate
@@ -68,19 +69,15 @@ export default function update(currentTime, deltaTime) {
       numActivated++;
     }
 
-    // update forces
-    // const t = IDEAL_FRAME_TIME / deltaTime;
-
-    // apply forces
-    p.vx *= drag;
-    p.vy *= drag;
-
-    p.vy += grav;
-    p.alpha *= fade;
-
     // update
-    p.px += p.vx;
-    p.py += p.vy;
+    p.px += p.vx * deltaTime;
+    p.py += p.vy * deltaTime;
+
+    p.alpha *= decay;
+    p.vx *= friction;
+    p.vy *= friction;
+
+    p.vy += gravity * deltaTime;
 
     // deactivate
     if (p.active) p.active = isInBounds(p) && isVisible(p);

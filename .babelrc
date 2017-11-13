@@ -1,5 +1,5 @@
 {
-  "plugins": ["syntax-object-rest-spread"],
+  "plugins": ["transform-object-rest-spread"],
   "presets": [
     [
       "env",
