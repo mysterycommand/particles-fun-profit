@@ -8,7 +8,7 @@ let shouldBoom = false;
 let boomX = w / 2;
 let boomY = h / 2;
 
-const friction = 0.975;
+const friction = 0.025;
 const gravity = 0.01 / IDEAL_FRAME_TIME;
 const decay = 0.975;
 
@@ -73,9 +73,12 @@ export default function update(currentTime, deltaTime) {
     p.px += p.vx * deltaTime;
     p.py += p.vy * deltaTime;
 
+    const dragX = p.vx * friction;
+    const dragY = p.vy * friction;
+
     p.alpha *= decay;
-    p.vx *= friction;
-    p.vy *= friction;
+    p.vx -= dragX;
+    p.vy -= dragY;
 
     p.vy += gravity * deltaTime;
 
