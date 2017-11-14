@@ -14,7 +14,7 @@ function boom() {
 }
 boom();
 
-export default function fireworks() {
+export function getState() {
   return {
     shouldBoom,
     boomX,

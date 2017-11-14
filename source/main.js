@@ -1,10 +1,10 @@
 import gameLoop from './lib/game-loop';
-import render from './app/render';
-import update from './app/update';
+import { getState, update, getActive, render } from './app';
 
 function game(currentTime, deltaTime) {
-  const state = update(currentTime, deltaTime);
-  render(state);
+  const state = getState(currentTime, deltaTime);
+  update(state, currentTime, deltaTime);
+  render(getActive(), currentTime, deltaTime);
 }
 
 const loop = gameLoop(game);
