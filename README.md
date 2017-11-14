@@ -67,3 +67,113 @@ const loop = gameLoop(game);
 pool.initialize(init);
 loop.start();
 ```
+
+- - -
+
+Maybe _this_ is how it should look:
+```js
+import gameLoop from './lib/game-loop';
+import objectPool from './lib/object-pool';
+import particleField from './lib/particle-field';
+
+import app from './app';
+import {
+  initialize,
+  activate,
+  integrate,
+  deactivate,
+} from './app/particles/type';
+
+const withProps = initialize({ active: false });
+const pool = objectPool(ofSize, withProps);
+const field = particleField(pool, {
+  activate,
+  integrate,
+  deactivate,
+});
+
+function game(t, dt) {
+  const state = app.state(t, dt);
+
+  /* this might be wrapped in some fixed time step */
+  field.update(state, t, dt);
+
+  const p = field.active;
+  render(p, t, dt);
+}
+
+const loop = gameLoop(game);
+loop.start();
+```
+
+… or, maybe this?:
+```js
+import gameLoop from './lib/game-loop';
+import {
+  getState,
+  update,
+  getActive,
+  render,
+ } from './app';
+
+function game(t, dt) {
+  const applicationState = getState(t, dt);
+
+  /* this might be wrapped in some fixed time step */
+  update(applicationState, t, dt);
+
+  const activeParticles = getActive();
+  render(activeParticles, t, dt);
+}
+
+const loop = gameLoop(game);
+loop.start();
+```
+
+… then `'./app'` would look like this(-ish):
+```js
+import objectPool from '../lib/object-pool';
+import particleField from '../lib/particle-field';
+import {
+  initialize,
+  activate,
+  integrate,
+  deactivate,
+  render,
+} from './particles/type';
+
+const withProps = initialize({ active: false });
+const pool = objectPool(ofSize, withProps);
+const field = particleField(pool, {
+  activate,
+  integrate,
+  deactivate,
+  render,
+});
+
+export function getState(t, dt) {
+  return {
+    shouldBoom,
+    boomX,
+    boomY,
+  };
+}
+
+export function update(state, t, dt) {
+  fields.forEach(field => {
+    field.activate(state, t, dt);
+    field.integrate(state, t, dt);
+    field.deactivate(state, t, dt);
+  });
+}
+
+export function getActive() {
+  return field.active;
+}
+
+export function render() {
+  fields.forEach(field => {
+    field.render(context);
+  });
+}
+```
