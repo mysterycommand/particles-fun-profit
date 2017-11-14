@@ -73,8 +73,8 @@ export default function gameLoop(callback = (/* currentTime, deltaTime */) => {}
      * ### start
      * starts the game loop, optionally resetting it first
      *
-     * @param {boolean} reset - whether or not to reset the game loop (start it
-     * over at 0)
+     * @param {boolean} [reset=true] - whether or not to reset the game loop
+     * (start it over at 0)
      */
     start(reset = true) {
       if (reset) this.reset();
@@ -98,7 +98,7 @@ export default function gameLoop(callback = (/* currentTime, deltaTime */) => {}
      *
      * @param {number} frame - a number indicating the frame to go to
      */
-    goto(frame = 1) {
+    goto(frame) {
       if (requestId !== -1) {
         console.warn(`\`gameLoop.goto\` called with ${frame} while the game loop is running`);
       }
