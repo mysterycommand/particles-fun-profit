@@ -1,16 +1,13 @@
-import { cos, ππ, random, sin } from '../util/math';
-import objectPool from '../lib/object-pool';
-import { IDEAL_FRAME_TIME } from '../lib/game-loop';
+import { cos, ππ, random, sin } from '../../util/math';
+import objectPool from '../../lib/object-pool';
+import { IDEAL_FRAME_TIME } from '../../lib/game-loop';
 
-import { w, h } from './canvas';
+import { w, h } from '../canvas';
+import fireworks from './fireworks';
 
-let shouldBoom = false;
-let boomX = w / 2;
-let boomY = h / 2;
-
-const friction = 0.025;
-const gravity = 0.01 / IDEAL_FRAME_TIME;
-const decay = 0.975;
+const fade = 0.975;
+const drag = 0.0015;
+const gravity = 0.0006;
 
 const size = 1000;
 const minToActivate = 0;
@@ -18,12 +15,14 @@ const maxToActivate = size * 0.2;
 const pool = objectPool(size, { active: false });
 
 function reset(p) {
+  const { boomX, boomY } = fireworks();
+
   p.px = boomX;
   p.py = boomY;
   p.alpha = 1;
 
   const theta = random() * ππ;
-  const radius = (10 + random() * 20) / IDEAL_FRAME_TIME;
+  const radius = random() * 20 / IDEAL_FRAME_TIME;
 
   p.vx = radius * cos(theta);
   p.vy = radius * sin(theta);
@@ -46,17 +45,9 @@ function isActive({ active }) {
 // initialize
 pool.forEach(reset);
 
-function boom() {
-  setTimeout(boom, 1000 + random() * 1000);
-  shouldBoom = true;
-  setTimeout(() => (shouldBoom = false), 50);
-  boomX = w * 0.2 + random() * (w * 0.6);
-  boomY = h * 0.2 + random() * (h * 0.6);
-}
-boom();
-
 export default function update(currentTime, deltaTime) {
   let numActivated = 0;
+  const { shouldBoom } = fireworks();
   let numToActivate = shouldBoom ? maxToActivate : minToActivate;
 
   if (deltaTime > IDEAL_FRAME_TIME) deltaTime = IDEAL_FRAME_TIME;
@@ -70,17 +61,14 @@ export default function update(currentTime, deltaTime) {
     }
 
     // update
+    p.vx -= p.vx * drag * deltaTime;
+    p.vy -= p.vy * drag * deltaTime;
+    p.vy += gravity * deltaTime;
+
     p.px += p.vx * deltaTime;
     p.py += p.vy * deltaTime;
 
-    const dragX = p.vx * friction;
-    const dragY = p.vy * friction;
-
-    p.alpha *= decay;
-    p.vx -= dragX;
-    p.vy -= dragY;
-
-    p.vy += gravity * deltaTime;
+    p.alpha *= fade;
 
     // deactivate
     if (p.active) p.active = isInBounds(p) && isVisible(p);
