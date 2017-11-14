@@ -142,6 +142,7 @@ import {
   render,
 } from './particles/type';
 
+const ofSize = 3000;
 const withProps = initialize({ active: false });
 const pool = objectPool(ofSize, withProps);
 const field = particleField(pool, {
@@ -171,9 +172,30 @@ export function getActive() {
   return field.active;
 }
 
-export function render() {
+export function render(context) {
   fields.forEach(field => {
     field.render(context);
   });
 }
 ```
+
+#### Todo:
+1. [ ] Do the refactor described above.
+  - [ ] Fix the timestep!?
+2. [ ] Find/create a `Vec2` implementation.
+3. [ ] Setup Verlet integration scheme.
+  - what about collisions?
+  - what about constraints?
+4. [ ] Finish out the demos:
+  1. [ ] Fireworks (mostly done, just needs polish).
+  2. [ ] Metaballs (also done, just in a different repo).
+  3. [ ] Character physics/ragdoll.
+  4. [ ] Infinite scroll.
+5. [ ] Update slides.
+  - what about the Tumblr slide?
+  - evolution of game loop?
+  - how is object pool not "just" an array
+  - component/command pattern
+    - monobehavior lifecycle? (http://whatiseeinit.blogspot.com/2012/10/unity3d-monobehaviour-lifecycle.html)
+  - speaker notes ...
+6. Time for design? Making GIFs?
