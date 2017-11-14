@@ -1,3 +1,7 @@
+function isActive({ active }) {
+  return active;
+}
+
 export default function particleField(pool, { activate, integrate, deactivate, render }) {
   return {
     activate() {
@@ -14,6 +18,10 @@ export default function particleField(pool, { activate, integrate, deactivate, r
 
     render() {
       pool.forEach(render);
+    },
+
+    get active() {
+      return pool.filter(isActive);
     },
   };
 }
