@@ -8,6 +8,7 @@ import particleField from '../../../lib/particle-field';
 const size = 3000;
 const maxToActivate = size * 0.2;
 const minToActivate = 0;
+let numActivated = 0;
 
 const fade = 0.975;
 const drag = 0.0015;
@@ -32,7 +33,7 @@ function activator(state) {
   const { boomX, boomY, shouldBoom } = state;
 
   const numToActivate = shouldBoom ? maxToActivate : minToActivate;
-  let numActivated = 0;
+  if (shouldBoom) numActivated = 0;
 
   return p => {
     if (p.active || numActivated > numToActivate) return;
