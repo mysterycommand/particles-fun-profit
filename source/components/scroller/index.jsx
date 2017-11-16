@@ -45,8 +45,8 @@ export default class Scroller extends Component {
       this.setState(() => ({ ...newState, particles: getActive() }));
     });
 
-    // loop.start();
-    loop.goto(1);
+    loop.start();
+    // loop.goto(1);
   }
 
   render() {

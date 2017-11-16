@@ -4,10 +4,11 @@ import particleField from '../../../../lib/particle-field';
 import initialize from './initialize';
 
 const size = 8;
-const props = {};
+const props = initialize({ active: false });
 const scrollItemPool = objectPool(size, props);
 
 const store = [];
+let lastTop = 10;
 
 function isInBounds(top, bottom, p) {
   return top < p.bottom && p.top < bottom;
@@ -15,21 +16,30 @@ function isInBounds(top, bottom, p) {
 
 const scrollItemField = particleField(scrollItemPool, {
   activator: ({ scrollTop, clientHeight /* , scrollHeight, scrollBottom */ }) => {
-    let lastTop = store.reduce((top, s) => (top + s ? s.top : 0), 0);
-    while (lastTop < scrollTop + clientHeight) {
-      store.push(initialize({ active: false }, lastTop));
-      lastTop = store.reduce((top, s) => (top + s ? s.top : 0), 0);
-    }
-    console.log(store);
+    const viewTop = scrollTop;
+    const viewBottom = scrollTop + clientHeight;
+    const storedInBounds = store.filter(s => isInBounds(viewTop, viewBottom, s));
 
     return p => {
       if (p.active) return;
-      const s = store
-        .filter(s => isInBounds(scrollTop, scrollTop + clientHeight, s))
-        .sort((a, b) => a.top - b.top)
-        .find(({ active }) => !active);
 
-      p = s;
+      if (lastTop < viewBottom) {
+        initialize(p, lastTop);
+        lastTop += p.height + 10;
+        store.push({ ...p, active: true });
+      } else {
+        const s = storedInBounds.find(({ active }) => !active);
+
+        if (s) {
+          p.top = s.top;
+          p.height = s.height;
+          p.bottom = s.bottom;
+          p.background = s.background;
+
+          s.active = true;
+        }
+      }
+
       p.active = true;
     };
   },
@@ -39,6 +49,10 @@ const scrollItemField = particleField(scrollItemPool, {
   },
 
   deactivator: ({ scrollTop, clientHeight }) => {
+    const viewTop = scrollTop;
+    const viewBottom = scrollTop + clientHeight;
+    store.filter(s => !isInBounds(viewTop, viewBottom, s)).forEach(s => (s.active = false));
+
     return p => {
       p.active = isInBounds(scrollTop, scrollTop + clientHeight, p);
     };
