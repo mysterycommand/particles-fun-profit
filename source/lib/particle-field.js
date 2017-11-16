@@ -8,13 +8,14 @@ export default function particleField(pool, { activator, integrator, deactivator
       const activate = activator(state);
       const integrate = integrator(state);
       const deactivate = deactivator(state);
-      const update = p => {
-        activate(p);
-        integrate(p);
-        deactivate(p);
+
+      const updateEach = (...args) => {
+        activate(...args);
+        integrate(...args);
+        deactivate(...args);
       };
 
-      pool.forEach(update);
+      pool.forEach(updateEach);
     },
 
     get active() {
