@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './components/app';
+import Scroller from './components/scroller';
 
 const rootEl = document.getElementById('root');
-ReactDOM.render(<App />, rootEl);
+ReactDOM.render(<Scroller />, rootEl);
