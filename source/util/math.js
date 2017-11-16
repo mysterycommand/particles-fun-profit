@@ -2,7 +2,7 @@ import seedRandom from 'seedrandom';
 import { name, version } from '../../package.json';
 
 export const random = seedRandom(`${name}@${version}`);
-export const { atan2, ceil, cos, floor, hypot, PI: π, round, sin } = Math;
+export const { abs, acos, atan2, ceil, cos, floor, hypot, min, PI: π, round, sin } = Math;
 export const ππ = 2 * π; // 360º
 export const hπ = π / 2; // 90º
 
