@@ -6,7 +6,7 @@ const fontSize = 24;
 bufferContext.font = `${fontSize}px monospace`;
 bufferContext.textBaseline = 'bottom';
 
-const maxElapsed = IDEAL_FRAME_TIME;
+const maxElapsed = IDEAL_FRAME_TIME / 2;
 
 let averageFps = 1000 / IDEAL_FRAME_TIME;
 let displayFps = averageFps;

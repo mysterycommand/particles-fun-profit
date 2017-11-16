@@ -1,9 +1,9 @@
-import { random, cos, sin, ππ } from '../../../util/math';
-import { IDEAL_FRAME_TIME } from '../../../lib/game-loop';
-import { w, h } from '../../canvas';
+import { random, cos, sin, ππ } from '../../../../util/math';
+import { IDEAL_FRAME_TIME } from '../../../../lib/game-loop';
+import { w, h } from '../../../canvas';
 
-import objectPool from '../../../lib/object-pool';
-import particleField from '../../../lib/particle-field';
+import objectPool from '../../../../lib/object-pool';
+import particleField from '../../../../lib/particle-field';
 
 const size = 3000;
 const maxToActivate = size * 0.2;
