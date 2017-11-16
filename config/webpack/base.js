@@ -1,7 +1,14 @@
 import { NoEmitOnErrorsPlugin } from 'webpack';
 
 import { description } from '../../package.json';
-import { indexHtml, mainJsx, sourceDir } from '../paths';
+import {
+  indexHtml,
+  fireworksJs,
+  metaballsJs,
+  reactMetaballsJsx,
+  infiniteScrollJsx,
+  sourceDir,
+} from '../paths';
 
 export const htmlPluginOptions = {
   inject: false,
@@ -15,8 +22,15 @@ const jsxRule = {
   test: /\.jsx?$/,
 };
 
+export const entries = {
+  fireworks: ['babel-polyfill', fireworksJs],
+  metaballs: ['babel-polyfill', metaballsJs],
+  'react-metaballs': ['babel-polyfill', reactMetaballsJsx],
+  'infinite-scroll': ['babel-polyfill', infiniteScrollJsx],
+};
+
 export default {
-  entry: ['babel-polyfill', mainJsx],
+  entry: entries,
 
   module: {
     rules: [
