@@ -15,7 +15,7 @@ function isInBounds(top, bottom, p) {
 }
 
 const scrollItemField = particleField(scrollItemPool, {
-  activator: ({ scrollTop, clientHeight /* , scrollHeight, scrollBottom */ }) => {
+  activator: ({ scrollTop, clientHeight }) => {
     const viewTop = scrollTop;
     const viewBottom = scrollTop + clientHeight;
     const storedInBounds = store.filter(s => isInBounds(viewTop, viewBottom, s));

@@ -1,7 +1,5 @@
 import metaField from './fields/meta';
 
-export { default as render } from './render';
-
 export function getState() {
   return {};
 }
