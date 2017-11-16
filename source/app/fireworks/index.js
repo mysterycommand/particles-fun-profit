@@ -2,6 +2,7 @@ import { random } from '../../util/math';
 import { w, h } from '../canvas';
 
 import boomField from './fields/boom';
+export { default as render } from './render';
 
 let shouldBoom = false;
 let boomX = w / 2;

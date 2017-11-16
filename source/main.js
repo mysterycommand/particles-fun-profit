@@ -1,6 +1,5 @@
 import gameLoop from './lib/game-loop';
-import { getState, update, getActive, getSize } from './app/fireworks';
-import render from './app/render';
+import { getState, update, getActive, getSize, render } from './app/fireworks';
 
 function game(currentTime, deltaTime) {
   const state = getState();
