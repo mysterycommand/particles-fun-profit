@@ -1,5 +1,4 @@
 {
-  "plugins": ["transform-object-rest-spread"],
   "presets": [
     [
       "env",
@@ -10,6 +9,7 @@
         },
         "useBuiltIns": true
       }
-    ]
+    ],
+    "react-app"
   ]
 }
