@@ -9,7 +9,7 @@ const nodeCoverage = 0.5;
 const handleLengthRatio = 1.7;
 const maxEdgeLength = 200;
 
-export default class App extends Component {
+export default class Metaballs extends Component {
   state = {
     particles: [],
   };
