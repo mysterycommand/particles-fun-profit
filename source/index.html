@@ -36,8 +36,7 @@
 </head>
 
 <body>
-  <main>
-    <canvas id="canvas"></canvas>
+  <main id="root">
   </main><% for (let chunk in htmlWebpackPlugin.files.chunks) { %>
   <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
 <% } %></body>

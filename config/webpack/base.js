@@ -1,7 +1,7 @@
 import { NoEmitOnErrorsPlugin } from 'webpack';
 
 import { description } from '../../package.json';
-import { indexHtml, mainJs, sourceDir } from '../paths';
+import { indexHtml, mainJsx, sourceDir } from '../paths';
 
 export const htmlPluginOptions = {
   inject: false,
@@ -9,19 +9,19 @@ export const htmlPluginOptions = {
   title: description,
 };
 
-const jsRule = {
+const jsxRule = {
   exclude: /node_modules/,
   include: sourceDir,
-  test: /\.js$/,
+  test: /\.jsx?$/,
 };
 
 export default {
-  entry: ['babel-polyfill', mainJs],
+  entry: ['babel-polyfill', mainJsx],
 
   module: {
     rules: [
       {
-        ...jsRule,
+        ...jsxRule,
         enforce: 'pre',
         use: {
           loader: 'eslint-loader',
@@ -32,7 +32,7 @@ export default {
         },
       },
       {
-        ...jsRule,
+        ...jsxRule,
         use: {
           loader: 'babel-loader',
           options: {
@@ -49,4 +49,8 @@ export default {
   },
 
   plugins: [new NoEmitOnErrorsPlugin()],
+
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
 };

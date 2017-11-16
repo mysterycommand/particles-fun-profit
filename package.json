@@ -8,7 +8,7 @@
   "private": true,
   "config": {},
   "scripts": {
-    "dev": "webpack-dev-server --config config/webpack/development.babel.js"
+    "dev": "NODE_ENV=development webpack-dev-server --config config/webpack/development.babel.js"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
