@@ -1,7 +1,12 @@
-const { requestAnimationFrame: rAF } = window;
-function tick(time) {
-  // rAF(tick);
-  // eslint-disable-next-line no-console
-  console.log(time);
+import gameLoop from './lib/game-loop';
+
+import { getState, update, getActive, getSize, render } from './app/fireworks';
+
+function game(currentTime, deltaTime) {
+  const state = getState();
+  update(state, currentTime, deltaTime);
+  render({ currentTime, deltaTime, particles: getActive(), size: getSize() });
 }
-rAF(tick);
+
+const loop = gameLoop(game);
+loop.start();

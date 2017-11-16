@@ -27,6 +27,7 @@ export default {
           loader: 'eslint-loader',
           options: {
             cache: true,
+            configFile: '.eslintrc.json',
           },
         },
       },
