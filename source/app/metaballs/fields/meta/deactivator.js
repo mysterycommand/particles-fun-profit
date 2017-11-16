@@ -1,8 +1,10 @@
-import { w, h } from '../../../canvas';
+// import { w, h } from '../../../canvas';
+const w = 400;
+const h = 225;
 
 function isInBounds({ px, py }) {
-  const leftRight = 0 < px && px < w;
-  const topBottom = 0 < py && py < h;
+  const leftRight = -w < px && px < w;
+  const topBottom = -h < py && py < h;
 
   return leftRight && topBottom;
 }
