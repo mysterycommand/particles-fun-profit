@@ -1,6 +1,6 @@
 import initialize from './initialize';
 
-const maxToActivate = 500;
+const maxToActivate = 1000;
 const minToActivate = 0;
 let numActivated = 0;
 

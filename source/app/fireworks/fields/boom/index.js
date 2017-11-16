@@ -6,7 +6,7 @@ import activator from './activator';
 import integrator from './integrator';
 import deactivator from './deactivator';
 
-const size = 3000;
+const size = 10000;
 const props = initialize({ active: false });
 const boomPool = objectPool(size, props);
 
