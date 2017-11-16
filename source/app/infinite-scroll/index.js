@@ -5,5 +5,7 @@ export function update(state) {
 }
 
 export function getActive() {
-  return scrollItemField.active;
+  const set = new Set();
+  scrollItemField.active.forEach(item => set.add(item));
+  return [...set];
 }

@@ -104,8 +104,12 @@ export default class Metaballs extends Component {
             </g>
 
             <clipPath id="meta-clip">
-              {nodePaths.map(nodePath => <path d={nodePath} fill="black" stroke="none" />)}
-              {edgePaths.map(edgePath => <path d={edgePath} fill="black" stroke="none" />)}
+              {nodePaths.map(nodePath => (
+                <path key={nodePath} d={nodePath} fill="black" stroke="none" />
+              ))}
+              {edgePaths.map(edgePath => (
+                <path key={edgePath} d={edgePath} fill="black" stroke="none" />
+              ))}
             </clipPath>
           </defs>
 
