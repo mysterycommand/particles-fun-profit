@@ -27,35 +27,30 @@ const sentinelDistance = 20000;
 export default class Scroller extends Component {
   state = {
     scrollTop: 0,
+    clientHeight: 0,
     scrollBottom: sentinelDistance,
     particles: [],
   };
 
-  onScroll = ({ target: { scrollTop } }) => {
-    const scrollBottom = scrollTop + sentinelDistance;
-    this.setState(() => ({
-      scrollTop,
-      scrollBottom,
-    }));
-  };
-
   componentDidMount() {
-    this.refs.scroller.addEventListener('scroll', this.onScroll);
+    const { clientHeight } = this.refs.scroller;
 
     const loop = gameLoop(() => {
-      update(this.state);
-      this.setState(() => ({ particles: getActive() }));
+      const { scrollTop } = this.refs.scroller;
+      const scrollBottom = scrollTop + sentinelDistance;
+
+      const newState = { clientHeight, scrollTop, scrollBottom };
+      update(newState);
+
+      this.setState(() => ({ ...newState, particles: getActive() }));
     });
 
-    loop.start();
-  }
-
-  componentWillUnmount() {
-    this.refs.scroller.addEventListener('scroll', this.onScroll);
+    // loop.start();
+    loop.goto(1);
   }
 
   render() {
-    const { scrollBottom } = this.state;
+    const { scrollBottom, particles } = this.state;
 
     return (
       <div style={scrollerStyle} ref="scroller">
@@ -66,6 +61,12 @@ export default class Scroller extends Component {
             top: scrollBottom,
           }}
         />
+        {particles.map(({ background, top, height }) => (
+          <div
+            key={`${top}-${height}`}
+            style={{ background, top, height, position: 'absolute', left: 10, right: 10 }}
+          />
+        ))}
       </div>
     );
   }
