@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Metaballs from './components/metaballs';
+import Scroller from './components/scroller';
 
 const rootEl = document.getElementById('root');
-ReactDOM.render(<Metaballs />, rootEl);
+ReactDOM.render(<Scroller />, rootEl);
