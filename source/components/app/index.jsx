@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import gameLoop from '../../lib/game-loop';
 
-import { getState, update, getActive, getSize } from '../../app/metaballs';
+import { getState, update, getActive } from '../../app/metaballs';
 import { canMeta, getMeta } from '../../app/metaballs/util';
 
 const nodeCoverage = 0.5;
@@ -11,17 +11,14 @@ const maxEdgeLength = 200;
 
 export default class App extends Component {
   state = {
-    currentTime: 0,
-    deltaTime: 0,
     particles: [],
-    size: 0,
   };
 
   componentDidMount() {
     const loop = gameLoop((currentTime, deltaTime) => {
       const state = getState();
       update(state, currentTime, deltaTime);
-      this.setState(() => ({ currentTime, deltaTime, particles: getActive(), size: getSize() }));
+      this.setState(() => ({ particles: getActive() }));
     });
 
     loop.start();
