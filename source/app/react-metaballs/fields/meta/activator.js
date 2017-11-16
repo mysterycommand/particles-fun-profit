@@ -1,7 +1,8 @@
 import { ππ, random } from '../../../../util/math';
-import { w, h } from '../../../canvas';
 import initialize from './initialize';
 
+const w = 0;
+const h = 0;
 const hw = w / 2;
 const hh = h / 2;
 

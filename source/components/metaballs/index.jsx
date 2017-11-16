@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import gameLoop from '../../lib/game-loop';
 
-import { getState, update, getActive } from '../../app/metaballs';
+import { getState, update, getActive } from '../../app/react-metaballs';
 import { canMeta, getMeta } from '../../app/metaballs/util';
 
 const nodeCoverage = 0.5;

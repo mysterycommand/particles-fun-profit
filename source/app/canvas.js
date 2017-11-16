@@ -1,3 +1,5 @@
+document.getElementById('root').innerHTML = '<canvas id="canvas"/>';
+
 export const target = document.getElementById('canvas');
 export const targetContext = target.getContext('2d');
 
