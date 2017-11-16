@@ -16,8 +16,10 @@ function boom() {
 }
 boom();
 
-export function getState(/* currentTime, deltaTime */) {
+export function getState(currentTime, deltaTime) {
   return {
+    currentTime,
+    deltaTime,
     shouldBoom,
     boomX,
     boomY,

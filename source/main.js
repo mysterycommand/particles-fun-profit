@@ -3,8 +3,12 @@ import { getState, update, getActive, render } from './app';
 
 function game(currentTime, deltaTime) {
   const state = getState(currentTime, deltaTime);
-  update(state, currentTime, deltaTime);
-  render(getActive(), currentTime, deltaTime);
+
+  /* this might need to be 'fixed' (time that is) */
+  update(state);
+  /* lol */
+
+  render(getActive());
 }
 
 const loop = gameLoop(game);

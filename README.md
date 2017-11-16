@@ -199,3 +199,136 @@ export function render(context) {
     - monobehavior lifecycle? (http://whatiseeinit.blogspot.com/2012/10/unity3d-monobehaviour-lifecycle.html)
   - speaker notes ...
 6. Time for design? Making GIFs?
+
+- - -
+
+Okay, maybe it looks like this:
+```js
+/* main.js */
+import gameLoop from 'game-loop';
+import * as app from 'app';
+
+function game(currentTime, deltaTime) {
+  app.update(currentTime, deltaTime);
+  const state = app.getState();
+  app.render(state);
+}
+
+const loop = gameLoop(game);
+loop.start();
+
+/* app/fields/boom.js */
+import objectPool from 'object-pool';
+import particleField from 'particle-field';
+
+const boomPool = objectPool(3000, { active: false });
+const boomField = particleField(pool, {
+  activator: state => {
+    const { boomX, boomY, shouldBoom } = state;
+
+    const numToActivate = shouldBoom ? pool.length * 0.2 : 0;
+    let numActivated = 0;
+
+    return p => {
+      p.px = boomX;
+      p.py = boomY;
+      p.alpha = 1;
+
+      const theta = random() * ππ;
+      const radius = random() * 20 / IDEAL_FRAME_TIME;
+
+      p.vx = radius * cos(theta);
+      p.vy = radius * sin(theta);
+      p.active = true;
+      numActivate++;
+    }
+  },
+
+  integrator: state => {
+    const { deltaTime } = state;
+
+    const fade = 0.975;
+    const drag = 0.0015;
+    const gravity = 0.0006;
+
+    return p => {
+      p.vx -= p.vx * drag * deltaTime;
+      p.vy -= p.vy * drag * deltaTime;
+      p.vy += gravity * deltaTime;
+
+      p.px += p.vx * deltaTime;
+      p.py += p.vy * deltaTime;
+
+      p.alpha *= fade;
+    }
+  },
+
+  deactivator: state => {
+    return p => {
+      p.active || (p.active = isInBounds(p) && isVisible(p))
+    }
+  }
+});
+
+/* particle-field.js */
+export function particleField(pool, {
+  activator,
+  integrator,
+  deactivator,
+}) {
+  return {
+    update(state) {
+      const activate = activator(state);
+      const integrate = integrator(state);
+      const deacitvate = deactivator(state);
+
+      pool.forEach(p => {
+        activate(p);
+        integrate(p);
+        deactivate(p);
+      });
+    },
+
+    get active() {
+      return pool.filter(isActive);
+    }
+  }
+}
+
+/* app/index.js */
+import boomField from './fields/boom';
+import { random } from '../../util/math';
+import { w, h } from '../canvas';
+
+let shouldBoom = false;
+let boomX = w / 2;
+let boomY = h / 2;
+
+function boom() {
+  setTimeout(boom, 1000 + random() * 1000);
+
+  shouldBoom = true;
+  setTimeout(() => (shouldBoom = false), 50);
+
+  boomX = w * 0.2 + random() * (w * 0.6);
+  boomY = h * 0.2 + random() * (h * 0.6);
+}
+boom();
+
+export function update(currentTime, deltaTime) {
+  boomField.update({
+    currentTime,
+    deltaTime,
+    shouldBoom,
+    boomX,
+    boomY,
+  });
+}
+
+export function getState() {
+  const { active } = boomField;
+
+  return {
+    active,
+  };
+}

@@ -1,12 +1,10 @@
-import { activate, integrate, deactivate } from './demos/fireworks';
+import fields from './demos/fireworks/fields';
 
 export { getState } from './demos/fireworks';
 
-export function update(state, currentTime, deltaTime) {
-  state.particles.forEach(particle => {
-    activate(particle, currentTime, deltaTime);
-    integrate(particle, currentTime, deltaTime);
-    deactivate(particle, currentTime, deltaTime);
+export function update(state) {
+  fields.forEach(field => {
+    field.update(state);
   });
 }
 

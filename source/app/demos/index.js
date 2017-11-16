@@ -46,10 +46,10 @@ function isActive({ active }) {
 pool.forEach(reset);
 
 export default function update(currentTime, deltaTime) {
-  let numActivated = 0;
   const { shouldBoom } = fireworks();
-  let numToActivate = shouldBoom ? maxToActivate : minToActivate;
 
+  let numActivated = 0;
+  let numToActivate = shouldBoom ? maxToActivate : minToActivate;
   if (deltaTime > IDEAL_FRAME_TIME) deltaTime = IDEAL_FRAME_TIME;
 
   pool.forEach(p => {
